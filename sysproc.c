@@ -16,14 +16,20 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
+  int status;
+
+  if (argint(0, &status) < 0)
+    exit(0);
+  exit(status);
   return 0;  // not reached
 }
 
 int
 sys_wait(void)
 {
-  return wait();
+  int *status;
+  argptr(0, (void*)&status, sizeof(status));
+  return wait(status);
 }
 
 int
@@ -96,3 +102,15 @@ sys_getsiblings(void)
   getsiblings();
   return 0;
 }
+
+// int
+// sys_waitpid(void)
+// {
+  // int pid;
+  // int *status;
+  // int options;
+  // argptr(0, (int*)&status, options);
+  // argptr(pid, (int*)&status, options);
+  // waitpid();
+  // return 0;
+// }

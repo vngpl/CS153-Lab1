@@ -225,11 +225,13 @@ fork(void)
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
 void
-exit(void)
+exit(int status)
 {
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
+
+  curproc->status = status;
 
   if(curproc == initproc)
     panic("init exiting");
@@ -270,7 +272,7 @@ exit(void)
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(void)
+wait(/*int *status*/)
 {
   struct proc *p;
   int havekids, pid;
@@ -286,6 +288,7 @@ wait(void)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
+        // *status = p->status;
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
@@ -536,18 +539,26 @@ procdump(void)
 void
 getsiblings(void)
 {
-	struct proc *curproc = myproc();
-	int parent_pid = curproc->parent->pid;
-	struct proc *p;
+  struct proc *curproc = myproc();
+  int parent_pid = curproc->parent->pid;
 
-	acquire(&ptable.lock);
-	for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-		if (p->state == UNUSED) {
-			continue;
-		}
-		if (p->parent->pid == parent_pid && p->pid != curproc->pid) {
-			cprintf("Process ID: %d\n", p->pid);
-		}
-	}
-	release(&ptable.lock);
+  cprintf("Current PID: %d\n", curproc->pid);
+  cprintf("Parent PID: %d\n", parent_pid);
+
+  acquire(&ptable.lock);
+  for (struct proc *p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p->state == UNUSED) {
+      continue;
+    }
+    if (p->parent->pid == parent_pid && p->pid != curproc->pid) {
+      cprintf("Sibling PID: %d\n", p->pid);
+    }
+  }
+  release(&ptable.lock);
 }
+
+// int
+// waitpid(int* status)
+// {
+
+// }
