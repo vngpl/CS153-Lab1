@@ -15,14 +15,14 @@ int main(void) {
   int child2_pid = fork();
   if (child2_pid == 0) {
     sleep(100);
-    getsiblings();
+    // getsiblings();
     exit(0);
   }
 
   int child3_pid = fork();
   if (child3_pid == 0) {
     sleep(100);
-    getsiblings();
+    // getsiblings();
     exit(0);
   }
 

@@ -542,8 +542,8 @@ getsiblings(void)
   struct proc *curproc = myproc();
   int parent_pid = curproc->parent->pid;
 
-  cprintf("Current PID: %d\n", curproc->pid);
-  cprintf("Parent PID: %d\n", parent_pid);
+  // cprintf("Current PID: %d\n", curproc->pid);
+  // cprintf("Parent PID: %d\n", parent_pid);
 
   acquire(&ptable.lock);
   for (struct proc *p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
@@ -551,7 +551,7 @@ getsiblings(void)
       continue;
     }
     if (p->parent->pid == parent_pid && p->pid != curproc->pid) {
-      cprintf("Sibling PID: %d\n", p->pid);
+      cprintf("%d\n", p->pid);
     }
   }
   release(&ptable.lock);

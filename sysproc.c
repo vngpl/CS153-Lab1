@@ -30,6 +30,7 @@ sys_wait(void)
   int *status;
   argptr(0, (void*)&status, sizeof(status));
   return wait(status);
+  // return wait();
 }
 
 int
