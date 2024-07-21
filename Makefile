@@ -182,7 +182,7 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_getsiblings\
-	# _waitpid\
+	_waitpid\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

@@ -3,6 +3,15 @@
 #include "user.h"
 
 int main(void) {
-	// waitpid();
-	return 0;
+  int childpid = fork();
+
+  if (!childpid) {
+    printf(1, "in child process\n");
+  }
+  if (childpid) {
+    printf(1, "in parent process\n");
+    waitpid(childpid, 0, 0);
+  }
+
+  exit(0);
 }

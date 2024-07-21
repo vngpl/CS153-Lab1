@@ -28,9 +28,9 @@ int
 sys_wait(void)
 {
   int *status;
-  argptr(0, (void*)&status, sizeof(status));
+  if (argptr(0, (void*)&status, sizeof(status)) < 0)
+    return -1;
   return wait(status);
-  // return wait();
 }
 
 int
@@ -104,14 +104,16 @@ sys_getsiblings(void)
   return 0;
 }
 
-// int
-// sys_waitpid(void)
-// {
-  // int pid;
-  // int *status;
-  // int options;
-  // argptr(0, (int*)&status, options);
-  // argptr(pid, (int*)&status, options);
-  // waitpid();
-  // return 0;
-// }
+int
+sys_waitpid(void)
+{
+  int pid;
+  int *status;
+  int options = 0;
+
+  if (argint(0, &pid) < 0)
+    return -1;
+  if (argptr(1, (void*)&status, sizeof(status)) < 0)
+    return -1;
+  return waitpid(pid, status, options);
+}

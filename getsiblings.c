@@ -2,8 +2,6 @@
 #include "stat.h"
 #include "user.h"
 
-// #define NUM_CHILDREN 2
-
 int main(void) {
   int child1_pid = fork();
   if (child1_pid == 0) {
@@ -26,32 +24,14 @@ int main(void) {
     exit(0);
   }
 
-  wait();
-  wait();
-  wait();
+  int waitstatus;
+  int waitpid;
 
+  waitpid = wait(&waitstatus);
+  waitpid = wait(&waitstatus);
+  waitpid = wait(&waitstatus);
+
+  (void)waitpid;
+  
   exit(0);
-
-  // int child_pid;
-
-  // for (int i = 0; i < NUM_CHILDREN; i++) {
-  //   child_pid = fork();
-  //   if (child_pid < 0) {
-  //     printf(1, "Fork failed\n");
-  //     exit(1);
-  //   }
-  //   else if (child_pid == 0) {
-  //     getsiblings();
-  //     exit(0);
-  //   }
-  //   else {
-  //     printf(1, "Parent created a child with PID: %d\n", child_pid);
-  //   }
-  // }
-
-  // for (int i = 0; i < NUM_CHILDREN; i++) {
-  //   wait();
-  // }
-
-  // exit(0);
 }
