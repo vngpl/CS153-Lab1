@@ -288,7 +288,8 @@ wait(int *status)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
-        *status = p->status;
+        if (status)
+          *status = p->status;
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
@@ -574,7 +575,8 @@ waitpid(int pid, int* status, int options)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
-        // *status = p->status;
+        if (status)
+          *status = p->status;
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
